@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {Component} from 'react';
+import InsuranceForm from './InsuranceForm';
 
-function InvestorDemo (props) {
-  return (
-    <div>
-      This is my investor demo
-    </div>
-  );
+class InvestorDemo extends Component {
+  render () {
+    return (
+      <div>
+        <InsuranceForm />
+      </div>
+    );
+  }
 }
 
 export default InvestorDemo;
