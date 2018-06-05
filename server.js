@@ -1,10 +1,19 @@
 const express = require ('express');
 const app = express ();
 const server = require ('http').Server (app);
-// const bodyParser = require ('body-parser');
+const bodyParser = require ('body-parser');
 
 // For parsing JSON
-// app.use (bodyParser.json ());
+app.use (bodyParser.json ());
+
+app.use (function (req, res, next) {
+  res.header ('Access-Control-Allow-Origin', '*');
+  res.header (
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  next ();
+});
 
 // // Send the file with socket config
 // app.get ('/', (req, res) => {
@@ -352,17 +361,18 @@ const graphData = {
 
 // Get from the store
 app.get ('/cluster/graph', (req, res) => {
-  res.set ('Access-Control-Allow-Origin', '*');
+  // res.set ('Access-Control-Allow-Origin', '*');
   const data = graphData;
   res.send (JSON.stringify (data));
 });
 
-// // Set in the store
-// app.post ('/set', (req, res) => {
-//   const {key, value} = req.body;
-//   const result = setInStore (key, value);
-//   res.send (JSON.stringify ({status: result}));
-// });
+// Set in the store
+app.post ('/car/insurance', (req, res) => {
+  console.log (req.body);
+  // res.set ('Access-Control-Allow-Origin', '*');
+  const data = graphData;
+  res.send (JSON.stringify (data));
+});
 
 // Start the server
 server.listen (8000, () => console.log ('Server is running!'));

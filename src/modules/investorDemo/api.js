@@ -9,4 +9,11 @@ export const getInitialGraphData = () =>
   axios ({
     method: 'get',
     url: BASE_URL + 'cluster/graph',
-  }).then (res => res);
+  }).then (res => res.data);
+
+export const submitFormData = formPayload =>
+  axios ({
+    method: 'post',
+    url: BASE_URL + 'car/insurance',
+    data: formPayload,
+  }).then (res => res.data);

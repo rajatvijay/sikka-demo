@@ -1,132 +1,152 @@
-import React, {Component} from 'react';
-import {Input, Row, Col, Dropdown, Menu, Button} from 'antd';
+import React from 'react';
 
-const deductibles = [1, 2, 3, 4, 5];
+import {Form, Input, Button, Select, DatePicker, message, Row, Col} from 'antd';
+const FormItem = Form.Item;
+const Option = Select.Option;
+const {MonthPicker} = DatePicker;
 
-class InsuranceForm extends Component {
-  state = {
-    zipCode: '',
-    carYear: '',
-    carMake: '',
-    carModel: '',
-    deductible: 1,
-    licenseTenure: '',
-    incidents: '',
-    coverage: 1,
-  };
+const success = () => {
+  message.success ('Car insurance added!', 2);
+};
 
-  handleInputChange = (field, event) => {
-    console.log (event);
-    const value = event.target.value;
-    this.setState ({
-      [field]: value,
+const error = () => {
+  message.error ('Some error occurred!', 2);
+};
+
+class InsuranceForm extends React.Component {
+  onSubmit = e => {
+    e.preventDefault ();
+    this.props.form.validateFields ((err, values) => {
+      if (!err) {
+        this.props.onSubmit (values);
+      }
     });
   };
 
+  UNSAFE_componentWillReceiveProps (nextProps) {
+    if (nextProps.isSuccess) {
+      success ();
+    } else if (nextProps.isError) {
+      error ();
+    }
+  }
+
   render () {
-    // onClick={e => this.handleInputChange ('coverage', e)}
-    const DeductiblesMenu = (
-      <Menu>
-        {deductibles.map (d => <Menu.Item key={d}>{d}</Menu.Item>)}
-      </Menu>
-    );
-
-    const CoverageMenu = (
-      <Menu>
-        {deductibles.map (d => <Menu.Item key={d}>{d}</Menu.Item>)}
-      </Menu>
-    );
-
-    const {
-      zipCode,
-      carYear,
-      carMake,
-      carModel,
-      deductible,
-      licenseTenure,
-      incidents,
-      coverage,
-    } = this.state;
+    const {getFieldDecorator} = this.props.form;
     return (
       <div>
-
-        {/** Zip code and Deductibles */}
-        <Row gutter={16}>
-          <Col span={12}>
-            <Input
-              placeholder="Zip Code"
-              value={zipCode}
-              type="number"
-              onChange={e => this.handleInputChange ('zipCode', e)}
-            />
+        <Form onSubmit={this.onSubmit} layout="inline" style={{padding: '1em'}}>
+          <Col span={8}>
+            <FormItem label="Zip Code">
+              {getFieldDecorator ('zipCode', {
+                rules: [{required: true, message: 'Please provide ZIP Code!'}],
+              }) (<Input type="number" style={{marginLeft: '3em'}} />)}
+            </FormItem>
           </Col>
-          <Col span={12}>
-            <Dropdown placement="bottomCenter" overlay={DeductiblesMenu}>
-              <Button>Deductibles</Button>
-            </Dropdown>
+          <Col span={8}>
+            <FormItem label="Deductibles">
+              {getFieldDecorator ('deductible', {
+                rules: [
+                  {required: true, message: 'Please Provide Deductibles!'},
+                ],
+              }) (
+                <Select
+                  style={{width: 200, marginLeft: '1em'}}
+                  size={'default'}
+                >
+                  <Option value={1}>1</Option>
+                  <Option value={2}>2</Option>
+                  <Option value={3}>3</Option>
+                  <Option value={4}>4</Option>
+                  <Option value={5}>5</Option>
+                </Select>
+              )}
+            </FormItem>
           </Col>
-        </Row>
-
-        {/** Car and No of Incidents */}
-        <Row gutter={16}>
-          <Col span={12}>
-            <Row>
-              <Col span={8}>
-                <Input
-                  placeholder="Car Year"
-                  value={carYear}
-                  type="number"
-                  onChange={e => this.handleInputChange ('carYear', e)}
-                />
-              </Col>
-              <Col span={8}>
-                <Input
-                  placeholder="Car Make"
-                  value={carMake}
-                  type="text"
-                  onChange={e => this.handleInputChange ('carMake', e)}
-                />
-              </Col>
-              <Col span={8}>
-                <Input
-                  placeholder="Car Model"
-                  value={carModel}
-                  type="number"
-                  onChange={e => this.handleInputChange ('carModel', e)}
-                />
-              </Col>
-            </Row>
+          <Col span={8}>
+            <FormItem label="Car Year">
+              {getFieldDecorator ('carYear', {
+                rules: [{required: true, message: 'Please Provide Car Year!'}],
+              }) (<MonthPicker mode={'year'} style={{marginLeft: '4em'}} />)}
+            </FormItem>
           </Col>
-          <Col span={12}>
-            <Input
-              placeholder="No. of Incidents"
-              value={incidents}
-              type="number"
-              onChange={e => this.handleInputChange ('incidents', e)}
-            />
+          <Col span={8}>
+            <FormItem label="Car Make">
+              {getFieldDecorator ('carMake', {
+                rules: [{required: true, message: 'Please provide Car Make!'}],
+              }) (<Input type="text" style={{marginLeft: '3em'}} />)}
+            </FormItem>
           </Col>
-        </Row>
-
-        {/** License Tenure and Coverage */}
-        <Row gutter={16}>
-          <Col span={12}>
-            <Input
-              placeholder="Driver License Tenure"
-              value={licenseTenure}
-              type="number"
-              onChange={e => this.handleInputChange ('licenseTenure', e)}
-            />
+          <Col span={8}>
+            <FormItem label="Car Model">
+              {getFieldDecorator ('carModel', {
+                rules: [{required: true, message: 'Please provide Car Model!'}],
+              }) (<Input type="text" style={{marginLeft: '2em'}} />)}
+            </FormItem>
           </Col>
-          <Col span={12}>
-            <Dropdown placement="bottomCenter" overlay={CoverageMenu}>
-              <Button>Coverage</Button>
-            </Dropdown>
+          <Col span={8}>
+            <FormItem label="No. of Incidents">
+              {getFieldDecorator ('incidents', {
+                rules: [
+                  {required: true, message: 'Please provide No. of Incidents!'},
+                ],
+              }) (<Input type="number" style={{marginLeft: '5px'}} />)}
+            </FormItem>
           </Col>
-        </Row>
-
+          <Col span={8}>
+            <FormItem label="Driver License Tenure">
+              {getFieldDecorator ('licenseTenure', {
+                rules: [
+                  {
+                    required: true,
+                    message: 'Please provide Driver License Tenure!',
+                  },
+                ],
+              }) (<Input type="number" style={{marginLeft: '3px'}} />)}
+            </FormItem>
+          </Col>
+          <Col span={8}>
+            <FormItem label="Coverage">
+              {getFieldDecorator ('coverage', {
+                rules: [{required: true, message: 'Please Provide Coverage!'}],
+              }) (
+                <Select
+                  style={{width: 200, marginLeft: '2.3em'}}
+                  size={'default'}
+                >
+                  <Option value={1}>1</Option>
+                  <Option value={2}>2</Option>
+                  <Option value={3}>3</Option>
+                  <Option value={4}>4</Option>
+                  <Option value={5}>5</Option>
+                </Select>
+              )}
+            </FormItem>
+          </Col>
+          <Col span={8}>
+            <FormItem>
+              <Button
+                loading={this.props.isLoading}
+                type="primary"
+                htmlType="submit"
+                style={{
+                  transform: 'translate(-50%, -50%)',
+                  left: '50%',
+                  top: '50%',
+                  marginRight: '-50%',
+                  marginTop: '20px',
+                }}
+              >
+                Submit
+              </Button>
+            </FormItem>
+          </Col>
+        </Form>
       </div>
     );
   }
 }
 
-export default InsuranceForm;
+const WrappedInsuranceForm = Form.create () (InsuranceForm);
+
+export default WrappedInsuranceForm;

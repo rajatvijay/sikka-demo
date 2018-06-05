@@ -12,7 +12,7 @@ class ClusterGraph extends Component {
   render () {
     const {data} = this.props;
     return (
-      <div>
+      <div style={{textAlign: 'center'}}>
         <svg id="clusterGraph" width="500" height="500" />
       </div>
     );
