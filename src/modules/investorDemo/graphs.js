@@ -6,14 +6,15 @@ import {
   forceLink,
   forceManyBody,
   forceCenter,
-  drag,
-  event,
+  forceCollide,
 } from 'd3';
 
 export function makeForceDirectedGraph (data, elementId) {
   var svg = select ('svg'),
     width = +svg.attr ('width'),
     height = +svg.attr ('height');
+
+  const radius = 4;
 
   // WARNING: Bad thing to do
   // Remove the old svg
@@ -24,11 +25,20 @@ export function makeForceDirectedGraph (data, elementId) {
   var simulation = forceSimulation ()
     .force (
       'link',
-      forceLink ().id (function (d) {
-        return d.id;
-      })
+      forceLink ()
+        .id (function (d) {
+          return d.id;
+        })
+        .distance (function (link) {
+          return 100 - link.value;
+        })
     )
+    // .strength (0.025)
+    // push nodes apart to space them out
     .force ('charge', forceManyBody ())
+    // add some collision detection so they don't overlap
+    .force ('collide', forceCollide ().radius (12))
+    // and draw them around the centre of the space
     .force ('center', forceCenter (width / 2, height / 2));
 
   var link = svg
@@ -39,7 +49,7 @@ export function makeForceDirectedGraph (data, elementId) {
     .enter ()
     .append ('line')
     .attr ('stroke-width', function (d) {
-      return Math.sqrt (d.value);
+      return 1;
     });
 
   var node = svg
@@ -49,16 +59,16 @@ export function makeForceDirectedGraph (data, elementId) {
     .data (data.nodes)
     .enter ()
     .append ('circle')
-    .attr ('r', 5)
+    .attr ('r', radius)
     .attr ('fill', function (d) {
       return color (d.group);
-    })
-    .call (
-      drag ()
-        .on ('start', dragstarted)
-        .on ('drag', dragged)
-        .on ('end', dragended)
-    );
+    });
+  // // .call (
+  // //   drag ()
+  // //     .on ('start', dragstarted)
+  // //     .on ('drag', dragged)
+  // //     .on ('end', dragended)
+  // );
 
   node.append ('title').text (function (d) {
     return d.id;
@@ -67,6 +77,10 @@ export function makeForceDirectedGraph (data, elementId) {
   simulation.nodes (data.nodes).on ('tick', ticked);
 
   simulation.force ('link').links (data.links);
+
+  // simulation.linkDistance (function (d) {
+  //   return d.value;
+  // });
 
   function ticked () {
     link
@@ -85,27 +99,27 @@ export function makeForceDirectedGraph (data, elementId) {
 
     node
       .attr ('cx', function (d) {
-        return d.x;
+        return (d.x = Math.max (radius, Math.min (width - radius, d.x)));
       })
       .attr ('cy', function (d) {
-        return d.y;
+        return (d.y = Math.max (radius, Math.min (height - radius, d.y)));
       });
   }
 
-  function dragstarted (d) {
-    if (!event.active) simulation.alphaTarget (0.3).restart ();
-    d.fx = d.x;
-    d.fy = d.y;
-  }
+  // function dragstarted (d) {
+  //   if (!event.active) simulation.alphaTarget (0.3).restart ();
+  //   d.fx = d.x;
+  //   d.fy = d.y;
+  // }
 
-  function dragged (d) {
-    d.fx = event.x;
-    d.fy = event.y;
-  }
+  // function dragged (d) {
+  //   d.fx = event.x;
+  //   d.fy = event.y;
+  // }
 
-  function dragended (d) {
-    if (!event.active) simulation.alphaTarget (0);
-    d.fx = null;
-    d.fy = null;
-  }
+  // function dragended (d) {
+  //   if (!event.active) simulation.alphaTarget (0);
+  //   d.fx = null;
+  //   d.fy = null;
+  // }
 }

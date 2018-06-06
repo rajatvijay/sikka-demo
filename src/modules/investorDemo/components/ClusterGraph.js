@@ -20,7 +20,7 @@ class ClusterGraph extends Component {
   render () {
     return (
       <div style={{textAlign: 'center'}}>
-        <svg id="clusterGraph" width="500" height="500" />
+        <svg id="clusterGraph" width="900" height="500" />
       </div>
     );
   }
