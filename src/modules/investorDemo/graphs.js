@@ -3,12 +3,10 @@ import {
   scaleOrdinal,
   schemeAccent,
   forceSimulation,
-  force,
   forceLink,
   forceManyBody,
   forceCenter,
   drag,
-  on,
   event,
 } from 'd3';
 
@@ -16,6 +14,10 @@ export function makeForceDirectedGraph (data, elementId) {
   var svg = select ('svg'),
     width = +svg.attr ('width'),
     height = +svg.attr ('height');
+
+  // WARNING: Bad thing to do
+  // Remove the old svg
+  document.getElementsByTagName ('svg')[0].innerHTML = null;
 
   var color = scaleOrdinal (schemeAccent);
 

@@ -2,15 +2,22 @@ import React, {Component} from 'react';
 import {makeForceDirectedGraph} from '../graphs';
 
 class ClusterGraph extends Component {
-  static getDerivedStateFromProps (props, state) {
-    if (props.data) {
-      makeForceDirectedGraph (props.data, 'clusterGraph');
+  // state = {};
+
+  // static getDerivedStateFromProps (props, state) {
+  //   if (props.data) {
+  //     makeForceDirectedGraph (props.data, 'clusterGraph');
+  //   }
+  //   return null;
+  // }
+
+  componentDidUpdate (previousProps) {
+    if (this.props.data && previousProps.data !== this.props.data) {
+      makeForceDirectedGraph (this.props.data, 'clusterGraph');
     }
-    return null;
   }
 
   render () {
-    const {data} = this.props;
     return (
       <div style={{textAlign: 'center'}}>
         <svg id="clusterGraph" width="500" height="500" />
