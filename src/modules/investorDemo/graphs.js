@@ -10,7 +10,9 @@ import {
 } from 'd3';
 
 export function makeForceDirectedGraph (data, elementId) {
-  var svg = select ('svg'),
+  console.log (data, elementId);
+  const elementSelector = '#' + elementId;
+  var svg = select (elementSelector),
     width = +svg.attr ('width'),
     height = +svg.attr ('height');
 
@@ -18,7 +20,7 @@ export function makeForceDirectedGraph (data, elementId) {
 
   // WARNING: Bad thing to do
   // Remove the old svg
-  document.getElementsByTagName ('svg')[0].innerHTML = null;
+  document.getElementById (elementId).innerHTML = null;
 
   var color = scaleOrdinal (schemeAccent);
 
@@ -61,7 +63,7 @@ export function makeForceDirectedGraph (data, elementId) {
     .append ('circle')
     .attr ('r', radius)
     .attr ('fill', function (d) {
-      return color (d.group);
+      return data.color;
     });
   // // .call (
   // //   drag ()
