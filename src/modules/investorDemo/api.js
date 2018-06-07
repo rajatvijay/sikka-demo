@@ -1,15 +1,7 @@
 import axios from 'axios';
+import {schemeAccent, scaleOrdinal} from 'd3';
 
-const colors = [
-  'rgb(56, 108, 176)',
-  'rgb(127, 201, 127)',
-  'rgb(253, 192, 134)',
-  'rgb(190, 174, 212)',
-  'rgb(127, 201, 127)',
-  'rgb(253, 192, 134)',
-  'rgb(190, 174, 212)',
-  'rgb(56, 108, 176)',
-];
+const colors = scaleOrdinal (schemeAccent);
 const BASE_URL = 'http://35.233.191.127/';
 // const BASE_URL = 'http://localhost:8000/';
 
@@ -26,11 +18,18 @@ export const getInitialGraphData = () =>
     })
     .then (data => {
       const graphData = Object.keys (data).reduce ((a, c, i) => {
-        a[c] = {
+        const cluster = {
           nodes: prepareData (data[c])[0],
           links: prepareData (data[c])[1],
-          color: colors[i],
+          color: colors (i),
         };
+        if (cluster.nodes.length) {
+          a[c] = {
+            nodes: prepareData (data[c])[0],
+            links: prepareData (data[c])[1],
+            color: colors (i),
+          };
+        }
         return a;
       }, {});
       return graphData;

@@ -1,7 +1,7 @@
 import {
   select,
-  scaleOrdinal,
-  schemeAccent,
+  // scaleOrdinal,
+  // schemeAccent,
   forceSimulation,
   forceLink,
   forceManyBody,
@@ -10,8 +10,8 @@ import {
 } from 'd3';
 
 export function makeForceDirectedGraph (data, elementId) {
-  console.log (data, elementId);
-  debugger;
+  // console.log (data, elementId);
+  // debugger;
   const elementSelector = '#' + elementId;
   var svg = select (elementSelector),
     width = +svg.attr ('width'),
@@ -23,7 +23,7 @@ export function makeForceDirectedGraph (data, elementId) {
   // Remove the old svg
   document.getElementById (elementId).innerHTML = null;
 
-  var color = scaleOrdinal (schemeAccent);
+  // var color = scaleOrdinal (schemeAccent);
 
   var simulation = forceSimulation ()
     .force (
@@ -79,6 +79,10 @@ export function makeForceDirectedGraph (data, elementId) {
     return d.id;
   });
 
+  link.append ('title').text (function (d) {
+    return d.value;
+  });
+
   simulation.nodes (data.nodes).on ('tick', ticked);
 
   simulation.force ('link').links (data.links);
@@ -104,10 +108,10 @@ export function makeForceDirectedGraph (data, elementId) {
 
     node
       .attr ('cx', function (d) {
-        return (d.x = Math.max (radius, Math.min (width - radius, d.x)));
+        return (d.x = Math.max (radius, Math.min (width - radius - 10, d.x)));
       })
       .attr ('cy', function (d) {
-        return (d.y = Math.max (radius, Math.min (height - radius, d.y)));
+        return (d.y = Math.max (radius, Math.min (height - radius - 10, d.y)));
       });
   }
 

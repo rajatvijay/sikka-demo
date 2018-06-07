@@ -24,11 +24,11 @@ class InsuranceForm extends React.Component {
   };
 
   UNSAFE_componentWillReceiveProps (nextProps) {
-    if (nextProps.isSuccess) {
-      success ();
-    } else if (nextProps.isError) {
-      error ();
-    }
+    // if (nextProps.isSuccess) {
+    //   success ();
+    // } else if (nextProps.isError) {
+    //   error ();
+    // }
   }
 
   render () {
@@ -39,8 +39,12 @@ class InsuranceForm extends React.Component {
           <Col span={8}>
             <FormItem label="Zip Code">
               {getFieldDecorator ('zipCode', {
-                rules: [{required: true, message: 'Please provide ZIP Code!'}],
-              }) (<Input type="number" style={{marginLeft: '3em'}} />)}
+                rules: [
+                  {required: true, message: 'Please provide ZIP Code!'},
+                  {max: 5, message: 'Please provide valid ZIP Code!'},
+                  {min: 5, message: 'Please provide valid ZIP Code!'},
+                ],
+              }) (<Input type="text" style={{marginLeft: '3em'}} />)}
             </FormItem>
           </Col>
           <Col span={8}>
@@ -66,8 +70,12 @@ class InsuranceForm extends React.Component {
           <Col span={8}>
             <FormItem label="Car Year">
               {getFieldDecorator ('carYear', {
-                rules: [{required: true, message: 'Please Provide Car Year!'}],
-              }) (<MonthPicker mode={'year'} style={{marginLeft: '4em'}} />)}
+                rules: [
+                  {required: true, message: 'Please Provide Car Year!'},
+                  {max: 4, message: 'Please provide valid year!'},
+                  {min: 4, message: 'Please provide valid year!'},
+                ],
+              }) (<Input type="text" style={{marginLeft: '4em'}} />)}
             </FormItem>
           </Col>
           <Col span={8}>

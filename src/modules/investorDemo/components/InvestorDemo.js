@@ -22,6 +22,8 @@ class InvestorDemo extends Component {
     this.setState ({isLoading: true});
     values = {
       ...values,
+      licenseTenure: Number (values.licenseTenure),
+      incidents: Number (values.incidents),
       carYear: new Date (values.carYear).getFullYear (),
       userName: 'Rajat',
     };

@@ -1,5 +1,11 @@
+function getRandomInt (min, max) {
+  min = Math.ceil (min);
+  max = Math.floor (max);
+  return Math.floor (Math.random () * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
+
 export const addNewPointInTheClusters = (clusters, point) => {
-  const dummyNodeId = 202;
+  const dummyNodeId = getRandomInt (500, 800);
   const pointsCluster = Object.keys (point)[0];
 
   const clusterSimilarities = point[pointsCluster];
