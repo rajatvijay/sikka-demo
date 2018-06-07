@@ -42,7 +42,6 @@ class InsuranceForm extends React.Component {
                 rules: [
                   {required: true, message: 'Please provide ZIP Code!'},
                   {max: 5, message: 'Please provide valid ZIP Code!'},
-                  {min: 5, message: 'Please provide valid ZIP Code!'},
                 ],
               }) (<Input type="text" style={{marginLeft: '3em'}} />)}
             </FormItem>
@@ -73,7 +72,6 @@ class InsuranceForm extends React.Component {
                 rules: [
                   {required: true, message: 'Please Provide Car Year!'},
                   {max: 4, message: 'Please provide valid year!'},
-                  {min: 4, message: 'Please provide valid year!'},
                 ],
               }) (<Input type="text" style={{marginLeft: '4em'}} />)}
             </FormItem>
