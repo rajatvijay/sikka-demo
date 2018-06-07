@@ -3,6 +3,7 @@ import WrappedInsuranceForm from './InsuranceForm';
 import ClusterGraph from './ClusterGraph';
 import {getInitialGraphData, submitFormData} from '../api';
 import {Layout} from 'antd';
+import {addNewPointInTheClusters} from '../utils';
 const {Header} = Layout;
 
 class InvestorDemo extends Component {
@@ -22,11 +23,17 @@ class InvestorDemo extends Component {
     this.setState ({isLoading: true});
     submitFormData (values).then (data => {
       console.log (data);
-      this.setState ({
-        isSuccess: true,
-        isError: false,
-        isLoading: false,
-        clusterData: data,
+      this.setState (previousState => {
+        const newCluster = addNewPointInTheClusters (
+          previousState.clusterData,
+          data
+        );
+        return {
+          isSuccess: true,
+          isError: false,
+          isLoading: false,
+          clusterData: {...newCluster},
+        };
       });
     });
   };

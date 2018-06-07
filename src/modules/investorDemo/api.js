@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// const BASE_URL = 'http://35.233.191.127/';
 const BASE_URL = 'http://localhost:8000/';
 
 // TODO: Handle the case of false status
@@ -8,8 +9,20 @@ const BASE_URL = 'http://localhost:8000/';
 export const getInitialGraphData = () =>
   axios ({
     method: 'get',
-    url: BASE_URL + 'cluster/graph',
-  }).then (res => res.data);
+    url: BASE_URL + 'demo/user/cluster/',
+  }).then (res => {
+    // console.log (res);
+    return res.data;
+  });
+// .then (data => {
+//   debugger;
+//   const d = data.reduce ((acc, d) => {
+//     acc[d.name] = d;
+//     return acc;
+//   }, {});
+//   console.log (d);
+//   return d;
+// });
 
 export const submitFormData = formPayload =>
   axios ({

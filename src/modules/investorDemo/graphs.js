@@ -11,6 +11,7 @@ import {
 
 export function makeForceDirectedGraph (data, elementId) {
   console.log (data, elementId);
+  debugger;
   const elementSelector = '#' + elementId;
   var svg = select (elementSelector),
     width = +svg.attr ('width'),
@@ -32,7 +33,7 @@ export function makeForceDirectedGraph (data, elementId) {
           return d.id;
         })
         .distance (function (link) {
-          return 100 - link.value;
+          return 100 - Number (link.value);
         })
     )
     // .strength (0.025)
@@ -61,9 +62,11 @@ export function makeForceDirectedGraph (data, elementId) {
     .data (data.nodes)
     .enter ()
     .append ('circle')
-    .attr ('r', radius)
+    .attr ('r', function (d) {
+      return d.radius || radius;
+    })
     .attr ('fill', function (d) {
-      return data.color;
+      return d.color || data.color;
     });
   // // .call (
   // //   drag ()
