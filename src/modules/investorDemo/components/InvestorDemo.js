@@ -19,8 +19,12 @@ class InvestorDemo extends Component {
   }
 
   handleFormSubmit = values => {
-    console.log (values);
     this.setState ({isLoading: true});
+    values = {
+      ...values,
+      carYear: new Date (values.carYear).getFullYear (),
+      userName: 'Rajat',
+    };
     submitFormData (values).then (data => {
       console.log (data);
       this.setState (previousState => {
