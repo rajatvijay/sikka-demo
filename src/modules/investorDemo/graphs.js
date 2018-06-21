@@ -63,7 +63,7 @@ export function makeForceDirectedGraph (data, elementId) {
     .enter ()
     .append ('circle')
     .attr ('r', function (d) {
-      return d.radius || radius;
+      return d.isCentroid ? radius + 2 : d.radius || radius;
     })
     .attr ('fill', function (d) {
       return d.color || data.color;
@@ -76,7 +76,7 @@ export function makeForceDirectedGraph (data, elementId) {
   // );
 
   node.append ('title').text (function (d) {
-    return d.id;
+    return d.isCentroid ? 'Sub-Cluster' : d.id;
   });
 
   link.append ('title').text (function (d) {

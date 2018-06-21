@@ -63,6 +63,19 @@ class InvestorDemo extends Component {
           isError={isError}
           isLoading={isLoading}
         />
+        <div>
+          <ul>
+            <li>
+              Each color circle belongs to an Insurance pricing region
+            </li>
+            <li>
+              Each sub-cluster is a different policy type (e.g. 5 years experience, 0 incidents, drives a Toyota Prius)
+            </li>
+            <li>
+              Distance from the centroid shows how "Similar" two policies are
+            </li>
+          </ul>
+        </div>
         <ClusterGraph data={clusterData} />
       </div>
     );
